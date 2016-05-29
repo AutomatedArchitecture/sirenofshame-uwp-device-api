@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Windows.UI.Core;
+using Windows.UI.Xaml;
 using MetroLog;
 using SirenOfShame.Device;
 
-namespace SirenOfShame.Pcl
+namespace SirenOfShame.HardwareTestGui
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
@@ -29,27 +31,39 @@ namespace SirenOfShame.Pcl
 
         private async void SirenOfShameDeviceOnConnected(object sender, EventArgs eventArgs)
         {
-            bool turnOn = true;
-            while (true)
+            Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
-                Log.Debug("device connected so turnong on led's");
-                var led0 = turnOn ? (byte)10 : (byte)0;
-                var manualControlData = new ManualControlData
-                {
-                    Led0 = led0,
-                    Led1 = led0,
-                    Led2 = led0,
-                    Led3 = led0,
-                    Led4 = led0,
-                    Siren = false
-                };
-                if (_sirenOfShameDevice.IsConnected)
-                {
-                    await _sirenOfShameDevice.ManualControl(manualControlData);
-                }
-                turnOn = !turnOn;
-                await Task.Delay(1000);
-            }
+                LedPatternListBox.ItemsSource = _sirenOfShameDevice.LedPatterns;
+            });
+            //bool turnOn = true;
+            //while (true)
+            //{
+            //    Log.Debug("device connected so turnong on led's");
+            //    var led0 = turnOn ? (byte)10 : (byte)0;
+            //    var manualControlData = new ManualControlData
+            //    {
+            //        Led0 = led0,
+            //        Led1 = led0,
+            //        Led2 = led0,
+            //        Led3 = led0,
+            //        Led4 = led0,
+            //        Siren = false
+            //    };
+            //    if (_sirenOfShameDevice.IsConnected)
+            //    {
+            //        await _sirenOfShameDevice.ManualControl(manualControlData);
+            //    }
+            //    turnOn = !turnOn;
+            //    await Task.Delay(1000);
+            //}
+        }
+
+        private void PlayLedPattern(object sender, RoutedEventArgs e)
+        {
+            if (LedPatternListBox.SelectedItem == null) return;
+            LedPattern ledPattern = (LedPattern)LedPatternListBox.SelectedItem;
+            var ledDuration = int.Parse(LedDuration.Text);
+            _sirenOfShameDevice.PlayLightPattern(ledPattern, new TimeSpan(0, 0, 0, 0, ledDuration));
         }
     }
 }

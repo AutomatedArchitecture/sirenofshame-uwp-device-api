@@ -1,7 +1,7 @@
 ﻿using MetroLog;
 using MetroLog.Targets;
 
-namespace SirenOfShame.Pcl
+namespace SirenOfShame.HardwareTestGui
 {
     public class MyLogManager
     {

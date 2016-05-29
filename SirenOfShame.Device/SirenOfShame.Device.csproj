@@ -108,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ControlByte1Flags.cs" />
+    <Compile Include="DeviceUnavailableException.cs" />
     <Compile Include="HardwareType.cs" />
     <Compile Include="LedPattern.cs" />
     <Compile Include="ManualControlData.cs" />

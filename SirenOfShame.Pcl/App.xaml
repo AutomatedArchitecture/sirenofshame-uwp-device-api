@@ -1,8 +1,7 @@
 ﻿<Application
-    x:Class="SirenOfShame.Pcl.App"
+    x:Class="SirenOfShame.HardwareTestGui.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:SirenOfShame.Pcl"
     RequestedTheme="Light">
 
 </Application>

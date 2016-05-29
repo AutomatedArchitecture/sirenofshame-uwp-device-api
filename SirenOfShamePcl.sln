@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SirenOfShame.Pcl", "SirenOfShame.Pcl\SirenOfShame.Pcl.csproj", "{66B62AAE-EC0A-4345-85DC-D5EA6924B30C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SirenOfShame.HardwareTestGui", "SirenOfShame.Pcl\SirenOfShame.HardwareTestGui.csproj", "{66B62AAE-EC0A-4345-85DC-D5EA6924B30C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SirenOfShame.Device", "SirenOfShame.Device\SirenOfShame.Device.csproj", "{E31DECBC-B26B-4BC3-AB33-0244605F570A}"
 EndProject

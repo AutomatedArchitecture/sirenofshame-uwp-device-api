@@ -7,8 +7,8 @@
     <ProjectGuid>{66B62AAE-EC0A-4345-85DC-D5EA6924B30C}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SirenOfShame.Pcl</RootNamespace>
-    <AssemblyName>SirenOfShame.Pcl</AssemblyName>
+    <RootNamespace>SirenOfShame.HardwareTestGui</RootNamespace>
+    <AssemblyName>SirenOfShame.HardwareTestGui</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.10586.0</TargetPlatformVersion>

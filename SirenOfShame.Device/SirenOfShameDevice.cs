@@ -21,6 +21,10 @@ namespace SirenOfShame.Device
         private DeviceWatcher _deviceWatcher;
         private HidDevice _hidDevice;
         private readonly List<LedPattern> _ledPatterns = new List<LedPattern>();
+        private const UInt16 Duration_Forever = 0xfffe;
+
+        public List<LedPattern> LedPatterns => _ledPatterns;
+
         private const ushort VendorId = 0x16d0;
         private const ushort ProductId = 0x0646;
 
@@ -273,6 +277,46 @@ namespace SirenOfShame.Device
                 _hidDevice.Dispose();
                 _hidDevice = null;
             }
+        }
+
+        private void EnsureConnected()
+        {
+            if (IsConnected)
+            {
+                return;
+            }
+            if (!IsConnected)
+            {
+                throw new DeviceUnavailableException();
+            }
+        }
+
+        public async Task PlayLightPattern(LedPattern lightPattern, TimeSpan durationTimeSpan)
+        {
+            EnsureConnected();
+            if (lightPattern == null)
+            {
+                await SendControlPacket(ledMode: 0, ledDuration: 0);
+            }
+            else
+            {
+                UInt16 duration = CalculateDurationFromTimeSpan(durationTimeSpan);
+                await SendControlPacket(ledMode: (byte)lightPattern.Id, ledDuration: duration);
+            }
+        }
+
+        private UInt16 CalculateDurationFromTimeSpan(TimeSpan? durationTimeSpan)
+        {
+            if (durationTimeSpan == null)
+            {
+                return Duration_Forever;
+            }
+            UInt32 result = (UInt32)(durationTimeSpan.Value.TotalSeconds * 10.0);
+            if (result > UInt16.MaxValue - 10)
+            {
+                return Duration_Forever;
+            }
+            return (UInt16)result;
         }
     }
 }
