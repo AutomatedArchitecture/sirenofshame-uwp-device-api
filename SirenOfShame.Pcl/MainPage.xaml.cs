@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Windows.Devices.Enumeration;
 using Windows.Devices.HumanInterfaceDevice;
 using Windows.Storage;
+using Windows.Storage.Streams;
 using Windows.UI.Xaml;
 using MetroLog;
 
@@ -20,6 +22,16 @@ namespace SirenOfShame.Pcl
         private static ushort UsagePage = 0xFF9C;
         private const ushort VendorId = 0x16d0;
         private const ushort ProductId = 0x0646;
+
+        public const int ReportId_Out_ControlPacket = 1;
+        public const int ReportId_Out_Upload = 2;
+        public const int ReportId_In_Info = 1;
+        public const int ReportId_In_ReadAudioPacket = 3;
+        public const int ReportId_In_ReadLedPacket = 4;
+
+        private const byte LED_MODE_MANUAL = 1;
+
+        private const int PacketSize = 1 + 37; // report id + packet length
 
         public MainPage()
         {
@@ -59,7 +71,7 @@ namespace SirenOfShame.Pcl
             {
                 if (hidDevice != null)
                 {
-                    Log.Debug("Successfully connected with sos device");
+                    await TurnOnLeds(hidDevice);
                 }
                 else
                 {
@@ -68,6 +80,66 @@ namespace SirenOfShame.Pcl
                     Log.Debug(notificationMessage);
                 }
             }
+        }
+
+        private static async Task TurnOnLeds(HidDevice hidDevice)
+        {
+            var usbControlPacket = GetControlPacket(
+                ledMode: LED_MODE_MANUAL,
+                audioMode: 0,
+                manualLeds0: 10,
+                manualLeds1: 10,
+                manualLeds2: 10,
+                manualLeds3: 10,
+                manualLeds4: 10
+                );
+            await SetOutputReport(hidDevice, usbControlPacket);
+        }
+
+        private static UsbControlPacket GetControlPacket(
+            ControlByte1Flags controlByte = ControlByte1Flags.Ignore,
+            byte audioMode = (byte)0xff, UInt16 audioDuration = (UInt16)0xffff,
+            byte ledMode = (byte)0xff, UInt16 ledDuration = (UInt16)0xffff,
+            byte readAudioIndex = (byte)0xff,
+            byte readLedIndex = (byte)0xff,
+            byte manualLeds0 = (byte)0xff,
+            byte manualLeds1 = (byte)0xff,
+            byte manualLeds2 = (byte)0xff,
+            byte manualLeds3 = (byte)0xff,
+            byte manualLeds4 = (byte)0xff)
+        {
+            return new UsbControlPacket
+            {
+                ReportId = ReportId_Out_ControlPacket,
+                ControlByte1 = controlByte,
+                AudioMode = audioMode,
+                AudioDuration = audioDuration,
+                LedMode = ledMode,
+                LedDuration = ledDuration,
+                ReadAudioIndex = readAudioIndex,
+                ReadLedIndex = readLedIndex,
+                ManualLeds0 = manualLeds0,
+                ManualLeds1 = manualLeds1,
+                ManualLeds2 = manualLeds2,
+                ManualLeds3 = manualLeds3,
+                ManualLeds4 = manualLeds4
+            };
+        }
+
+        private static async Task SetOutputReport(HidDevice hidDevice, UsbControlPacket usbControlPacket)
+        {
+            var outputReport = hidDevice.CreateOutputReport(ReportId_Out_ControlPacket);
+
+            var dataWriter = new DataWriter();
+
+            var bytes = ToByteArray(usbControlPacket);
+            dataWriter.WriteBytes(bytes);
+
+            outputReport.Data = dataWriter.DetachBuffer();
+
+            uint bytesWritten = await hidDevice.SendOutputReportAsync(outputReport);
+
+            Log.Debug("Bytes written: " + bytesWritten);
         }
 
         private static string GetErrorMessage(DeviceAccessStatus deviceAccessStatus, DeviceInformation sosDevice)
@@ -98,6 +170,23 @@ namespace SirenOfShame.Pcl
         {
             var deviceSelector = HidDevice.GetDeviceSelector(UsagePage, UsageId, VendorId, ProductId);
             return deviceSelector;
+        }
+
+        private static byte[] ToByteArray(UsbControlPacket obj)
+        {
+            byte[] buffer = new byte[PacketSize];
+            int objSize = Marshal.SizeOf(obj);
+            IntPtr ptr = Marshal.AllocHGlobal(objSize);
+            try
+            {
+                Marshal.StructureToPtr(obj, ptr, false);
+                Marshal.Copy(ptr, buffer, 0, objSize);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(ptr);
+            }
+            return buffer;
         }
     }
 }
