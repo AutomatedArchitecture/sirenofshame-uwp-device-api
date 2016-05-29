@@ -34,6 +34,8 @@ namespace SirenOfShame.Pcl
         public event EventHandler Connected;
         public event EventHandler Disconnected;
 
+        public bool IsConnected => _hidDevice != null;
+
         private static UsbControlPacket GetControlPacket(
             ControlByte1Flags controlByte = ControlByte1Flags.Ignore,
             byte audioMode = (byte)0xff, UInt16 audioDuration = (UInt16)0xffff,
@@ -154,6 +156,7 @@ namespace SirenOfShame.Pcl
         private void OnDeviceRemoved(DeviceWatcher sender, DeviceInformationUpdate args)
         {
             Log.Debug("Sos device was disconnected");
+            _hidDevice.Dispose();
             _hidDevice = null;
             Disconnected?.Invoke(this, EventArgs.Empty);
         }

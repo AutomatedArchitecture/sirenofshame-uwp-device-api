@@ -42,7 +42,10 @@ namespace SirenOfShame.Pcl
                     Led4 = led0,
                     Siren = false
                 };
-                await _sirenOfShameDevice.ManualControl(manualControlData);
+                if (_sirenOfShameDevice.IsConnected)
+                {
+                    await _sirenOfShameDevice.ManualControl(manualControlData);
+                }
                 turnOn = !turnOn;
                 await Task.Delay(1000);
             }
