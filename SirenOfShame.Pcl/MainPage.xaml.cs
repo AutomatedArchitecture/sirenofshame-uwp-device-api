@@ -5,6 +5,7 @@ using Windows.Devices.Enumeration;
 using Windows.Devices.HumanInterfaceDevice;
 using Windows.Storage;
 using Windows.UI.Xaml;
+using MetroLog;
 
 namespace SirenOfShame.Pcl
 {
@@ -13,6 +14,8 @@ namespace SirenOfShame.Pcl
     /// </summary>
     public sealed partial class MainPage
     {
+        private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger<MainPage>();
+
         private static ushort UsageId = 1;
         private static ushort UsagePage = 0xFF9C;
         private const ushort VendorId = 0x16d0;
@@ -40,11 +43,12 @@ namespace SirenOfShame.Pcl
 
         private void OnDeviceRemoved(DeviceWatcher sender, DeviceInformationUpdate args)
         {
-            System.Diagnostics.Debug.WriteLine("Removed");
+            Log.Debug("Sos device was disconnected");
         }
 
         private async void OnDeviceAdded(DeviceWatcher sender, DeviceInformation args)
         {
+            Log.Debug("Sos device was connected");
             await TryConnect();
         }
 
@@ -55,16 +59,13 @@ namespace SirenOfShame.Pcl
             {
                 if (hidDevice != null)
                 {
-                    System.Diagnostics.Debug.WriteLine(hidDevice.UsageId);
-                    System.Diagnostics.Debug.WriteLine(hidDevice.UsagePage);
-                    System.Diagnostics.Debug.WriteLine(hidDevice.ProductId);
-                    System.Diagnostics.Debug.WriteLine(hidDevice.VendorId);
+                    Log.Debug("Successfully connected with sos device");
                 }
                 else
                 {
                     var deviceAccessStatus = DeviceAccessInformation.CreateFromId(sosDevice.Id).CurrentStatus;
                     var notificationMessage = GetErrorMessage(deviceAccessStatus, sosDevice);
-                    System.Diagnostics.Debug.WriteLine(notificationMessage);
+                    Log.Debug(notificationMessage);
                 }
             }
         }
