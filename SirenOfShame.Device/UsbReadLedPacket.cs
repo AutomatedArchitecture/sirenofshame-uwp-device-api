@@ -1,9 +1,9 @@
 using System.Runtime.InteropServices;
 
-namespace SirenOfShame.Pcl
+namespace SirenOfShame.Device
 {
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public class UsbReadLedPacket
+    internal class UsbReadLedPacket
     {
         [MarshalAs(UnmanagedType.U1)]
         public byte Id;

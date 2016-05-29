@@ -1,10 +1,10 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace SirenOfShame.Pcl
+namespace SirenOfShame.Device
 {
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public struct UsbControlPacket
+    internal struct UsbControlPacket
     {
         [MarshalAs(UnmanagedType.U1)]
         public byte ReportId;

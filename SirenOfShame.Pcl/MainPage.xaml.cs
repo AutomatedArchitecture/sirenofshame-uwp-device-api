@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using MetroLog;
+using SirenOfShame.Device;
 
 namespace SirenOfShame.Pcl
 {

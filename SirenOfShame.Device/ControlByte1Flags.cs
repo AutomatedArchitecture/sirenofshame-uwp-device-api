@@ -1,9 +1,9 @@
 using System;
 
-namespace SirenOfShame.Pcl
+namespace SirenOfShame.Device
 {
     [Flags]
-    public enum ControlByte1Flags : byte
+    internal enum ControlByte1Flags : byte
     {
         Ignore = 0xff,
         FirmwareUpgrade = 0x01,

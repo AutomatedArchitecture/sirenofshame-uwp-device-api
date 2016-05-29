@@ -1,4 +1,4 @@
-namespace SirenOfShame.Pcl
+namespace SirenOfShame.Device
 {
     public class ManualControlData
     {

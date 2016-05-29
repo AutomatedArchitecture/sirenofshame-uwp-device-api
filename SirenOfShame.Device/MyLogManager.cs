@@ -1,9 +1,9 @@
 ﻿using MetroLog;
 using MetroLog.Targets;
 
-namespace SirenOfShame.Pcl
+namespace SirenOfShame.Device
 {
-    public class MyLogManager
+    internal class MyLogManager
     {
         static MyLogManager()
         {

@@ -1,4 +1,4 @@
-namespace SirenOfShame.Pcl
+namespace SirenOfShame.Device
 {
     /// <summary>
     /// The type of Siren of Shame device.

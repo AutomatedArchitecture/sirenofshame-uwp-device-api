@@ -10,7 +10,7 @@ using Windows.Storage;
 using Windows.Storage.Streams;
 using MetroLog;
 
-namespace SirenOfShame.Pcl
+namespace SirenOfShame.Device
 {
     public class SirenOfShameDevice : IDisposable
     {
