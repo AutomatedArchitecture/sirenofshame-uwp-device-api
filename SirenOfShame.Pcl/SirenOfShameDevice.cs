@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Devices.Enumeration;
 using Windows.Devices.HumanInterfaceDevice;
@@ -17,15 +19,16 @@ namespace SirenOfShame.Pcl
         private static ushort UsageId = 1;
         private static ushort UsagePage = 0xFF9C;
         private DeviceWatcher _deviceWatcher;
-        private static HidDevice _hidDevice;
+        private HidDevice _hidDevice;
+        private readonly List<LedPattern> _ledPatterns = new List<LedPattern>();
         private const ushort VendorId = 0x16d0;
         private const ushort ProductId = 0x0646;
 
-        public const int ReportId_Out_ControlPacket = 1;
-        public const int ReportId_Out_Upload = 2;
-        public const int ReportId_In_Info = 1;
-        public const int ReportId_In_ReadAudioPacket = 3;
-        public const int ReportId_In_ReadLedPacket = 4;
+        private const int ReportId_Out_ControlPacket = 1;
+        private const int ReportId_Out_Upload = 2;
+        private const int ReportId_In_Info = 1;
+        private const int ReportId_In_ReadAudioPacket = 3;
+        private const int ReportId_In_ReadLedPacket = 4;
 
         private const byte LED_MODE_MANUAL = 1;
 
@@ -36,7 +39,7 @@ namespace SirenOfShame.Pcl
 
         public bool IsConnected => _hidDevice != null;
 
-        private static UsbControlPacket GetControlPacket(
+        private async Task SendControlPacket(
             ControlByte1Flags controlByte = ControlByte1Flags.Ignore,
             byte audioMode = (byte)0xff, UInt16 audioDuration = (UInt16)0xffff,
             byte ledMode = (byte)0xff, UInt16 ledDuration = (UInt16)0xffff,
@@ -48,7 +51,7 @@ namespace SirenOfShame.Pcl
             byte manualLeds3 = (byte)0xff,
             byte manualLeds4 = (byte)0xff)
         {
-            return new UsbControlPacket
+            var controlPacket = new UsbControlPacket
             {
                 ReportId = ReportId_Out_ControlPacket,
                 ControlByte1 = controlByte,
@@ -64,6 +67,7 @@ namespace SirenOfShame.Pcl
                 ManualLeds3 = manualLeds3,
                 ManualLeds4 = manualLeds4
             };
+            await SetOutputReport(controlPacket);
         }
 
         private async Task SetOutputReport(UsbControlPacket usbControlPacket)
@@ -131,16 +135,94 @@ namespace SirenOfShame.Pcl
             return buffer;
         }
 
-        private static async Task<bool> TryConnect()
+        private async Task<bool> TryConnect()
         {
             var sosDevice = await GetDeviceInfo();
             _hidDevice = await HidDevice.FromIdAsync(sosDevice.Id, FileAccessMode.ReadWrite);
             if (_hidDevice != null)
+            {
+                await ReadDeviceInfo();
+                await ReadAudioPatterns();
+                await ReadLedPatterns();
                 return true;
+            }
             var deviceAccessStatus = DeviceAccessInformation.CreateFromId(sosDevice.Id).CurrentStatus;
             var notificationMessage = GetErrorMessage(deviceAccessStatus, sosDevice);
             Log.Debug(notificationMessage);
             return false;
+        }
+
+        private async Task ReadLedPatterns()
+        {
+            _ledPatterns.Clear();
+            await SendControlPacket(readLedIndex: 0);
+
+            while (true)
+            {
+                var ledPatternPacket = await GetInputReport<UsbReadLedPacket>(ReportId_In_ReadLedPacket);
+                if (ledPatternPacket.Id == 0xff)
+                {
+                    return;
+                }
+                _ledPatterns.Add(new LedPattern
+                {
+                    Id = ledPatternPacket.Id,
+                    Name = new string(ledPatternPacket.Name).TrimEnd('\0')
+                });
+            }
+        }
+
+        private async Task<T> GetInputReport<T>(ushort reportId)
+        {
+            var inputReport = await _hidDevice.GetInputReportAsync(reportId);
+            IBuffer buffer = inputReport.Data;
+            byte[] bytes = new byte[buffer.Length];
+            buffer.CopyTo(bytes);
+            var result = ToInfoReport<T>(bytes);
+            return result;
+        }
+
+        private static async Task ReadAudioPatterns()
+        {
+            await Task.Yield();
+        }
+
+        private async Task<UsbInfoPacket> ReadDeviceInfo()
+        {
+            var infoPacket = await GetInputReport<UsbInfoPacket>(ReportId_In_Info);
+            Log.Debug("Info packet receieved:");
+            Log.Debug("\tVersion: " + infoPacket.FirmwareVersion);
+            Log.Debug("\tHardwareType: " + infoPacket.HardwareType);
+            Log.Debug("\tHardwareVersion: " + infoPacket.HardwareVersion);
+            Log.Debug("\tExternalMemorySize: " + infoPacket.ExternalMemorySize);
+            Log.Debug("\tAudioMode: " + infoPacket.AudioMode);
+            Log.Debug("\tAudioPlayDuration: " + infoPacket.AudioPlayDuration);
+            Log.Debug("\tLedMode: " + infoPacket.LedMode);
+            Log.Debug("\tLedPlayDuration: " + infoPacket.LedPlayDuration);
+            FirmwareVersion = infoPacket.FirmwareVersion;
+            HardwareType = infoPacket.HardwareType;
+            HardwareVersion = infoPacket.HardwareVersion;
+            return infoPacket;
+        }
+
+        public static HardwareType HardwareType { get; set; }
+
+        public static byte HardwareVersion { get; set; }
+
+        public static ushort FirmwareVersion { get; set; }
+
+        private static T ToInfoReport<T>(byte[] buffer)
+        {
+            GCHandle pinnedPacket = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+            try
+            {
+                T result = (T)Marshal.PtrToStructure(pinnedPacket.AddrOfPinnedObject(), typeof(T));
+                return result;
+            }
+            finally
+            {
+                pinnedPacket.Free();
+            }
         }
 
         public void StartWatching()
@@ -174,7 +256,7 @@ namespace SirenOfShame.Pcl
         public async Task ManualControl(ManualControlData manualControlData)
         {
             byte manualSiren = (byte)(manualControlData.Siren ? 1 : 0);
-            var controlPacket = GetControlPacket(
+            await SendControlPacket(
                 ledMode: LED_MODE_MANUAL,
                 audioMode: manualSiren,
                 manualLeds0: manualControlData.Led0,
@@ -182,7 +264,6 @@ namespace SirenOfShame.Pcl
                 manualLeds2: manualControlData.Led2,
                 manualLeds3: manualControlData.Led3,
                 manualLeds4: manualControlData.Led4);
-            await SetOutputReport(controlPacket);
         }
 
         public void Dispose()

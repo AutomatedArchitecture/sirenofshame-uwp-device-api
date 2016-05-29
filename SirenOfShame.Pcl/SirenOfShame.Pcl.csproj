@@ -96,6 +96,8 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="ControlByte1Flags.cs" />
+    <Compile Include="HardwareType.cs" />
+    <Compile Include="LedPattern.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -104,6 +106,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SirenOfShameDevice.cs" />
     <Compile Include="UsbControlPacket.cs" />
+    <Compile Include="UsbInfoPacket.cs" />
+    <Compile Include="UsbReadLedPacket.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
