@@ -24,7 +24,31 @@ namespace SirenOfShame.Pcl
             Loaded += OnLoaded;
         }
 
-        private async void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
+        private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
+        {
+            WatchForSosDeviceConnection();
+        }
+
+        private void WatchForSosDeviceConnection()
+        {
+            var selector = GetDeviceSelector();
+            var deviceWatcher = DeviceInformation.CreateWatcher(selector);
+            deviceWatcher.Added += OnDeviceAdded;
+            deviceWatcher.Removed += OnDeviceRemoved;
+            deviceWatcher.Start();
+        }
+
+        private void OnDeviceRemoved(DeviceWatcher sender, DeviceInformationUpdate args)
+        {
+            System.Diagnostics.Debug.WriteLine("Removed");
+        }
+
+        private async void OnDeviceAdded(DeviceWatcher sender, DeviceInformation args)
+        {
+            await TryConnect();
+        }
+
+        private static async Task TryConnect()
         {
             var sosDevice = await GetDeviceInfo();
             using (HidDevice hidDevice = await HidDevice.FromIdAsync(sosDevice.Id, FileAccessMode.ReadWrite))
@@ -39,26 +63,27 @@ namespace SirenOfShame.Pcl
                 else
                 {
                     var deviceAccessStatus = DeviceAccessInformation.CreateFromId(sosDevice.Id).CurrentStatus;
-
-                    string notificationMessage;
-                    if (deviceAccessStatus == DeviceAccessStatus.DeniedByUser)
-                    {
-                        notificationMessage = "Access to the device was blocked by the user : " + sosDevice.Id;
-                    }
-                    else if (deviceAccessStatus == DeviceAccessStatus.DeniedBySystem)
-                    {
-                        // This status is most likely caused by app permissions (did not declare the device in the app's package.appxmanifest)
-                        // This status does not cover the case where the device is already opened by another app.
-                        notificationMessage = "Access to the device was blocked by the system : " + sosDevice.Id;
-                    }
-                    else
-                    {
-                        // Most likely the device is opened by another app, but cannot be sure
-                        notificationMessage = "Unknown error, possibly opened by another app : " + sosDevice.Id;
-                    }
+                    var notificationMessage = GetErrorMessage(deviceAccessStatus, sosDevice);
                     System.Diagnostics.Debug.WriteLine(notificationMessage);
                 }
             }
+        }
+
+        private static string GetErrorMessage(DeviceAccessStatus deviceAccessStatus, DeviceInformation sosDevice)
+        {
+            if (deviceAccessStatus == DeviceAccessStatus.DeniedByUser)
+            {
+                return "Access to the device was blocked by the user : " + sosDevice.Id;
+            }
+            if (deviceAccessStatus == DeviceAccessStatus.DeniedBySystem)
+            {
+                // This status is most likely caused by app permissions (did not declare the device in the app's package.appxmanifest)
+                // This status does not cover the case where the device is already opened by another app.
+                return "Access to the device was blocked by the system : " + sosDevice.Id;
+            }
+
+            // Most likely the device is opened by another app, but cannot be sure
+            return "Unknown error, possibly opened by another app : " + sosDevice.Id;
         }
 
         private static async Task<DeviceInformation> GetDeviceInfo()
