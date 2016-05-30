@@ -107,6 +107,7 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AudioPattern.cs" />
     <Compile Include="ControlByte1Flags.cs" />
     <Compile Include="DeviceUnavailableException.cs" />
     <Compile Include="HardwareType.cs" />
@@ -117,6 +118,7 @@
     <Compile Include="SirenOfShameDevice.cs" />
     <Compile Include="UsbControlPacket.cs" />
     <Compile Include="UsbInfoPacket.cs" />
+    <Compile Include="UsbReadAudioPacket.cs" />
     <Compile Include="UsbReadLedPacket.cs" />
     <EmbeddedResource Include="Properties\SirenOfShame.Device.rd.xml" />
   </ItemGroup>

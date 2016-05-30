@@ -21,9 +21,11 @@ namespace SirenOfShame.Device
         private DeviceWatcher _deviceWatcher;
         private HidDevice _hidDevice;
         private readonly List<LedPattern> _ledPatterns = new List<LedPattern>();
+        private readonly List<AudioPattern> _audioPatterns = new List<AudioPattern>();
         private const UInt16 Duration_Forever = 0xfffe;
 
         public List<LedPattern> LedPatterns => _ledPatterns;
+        public List<AudioPattern> AudioPatterns => _audioPatterns;
 
         private const ushort VendorId = 0x16d0;
         private const ushort ProductId = 0x0646;
@@ -186,9 +188,23 @@ namespace SirenOfShame.Device
             return result;
         }
 
-        private static async Task ReadAudioPatterns()
+        private async Task ReadAudioPatterns()
         {
-            await Task.Yield();
+            _audioPatterns.Clear();
+            await SendControlPacket(readAudioIndex: 0);
+            while (true)
+            {
+                var audioPatternPacket = await GetInputReport<UsbReadAudioPacket>(ReportId_In_ReadAudioPacket);
+                if (audioPatternPacket.Id == 0xff)
+                {
+                    return;
+                }
+                _audioPatterns.Add(new AudioPattern
+                {
+                    Id = audioPatternPacket.Id,
+                    Name = new string(audioPatternPacket.Name).TrimEnd('\0')
+                });
+            }
         }
 
         private async Task<UsbInfoPacket> ReadDeviceInfo()
@@ -288,6 +304,21 @@ namespace SirenOfShame.Device
             if (!IsConnected)
             {
                 throw new DeviceUnavailableException();
+            }
+        }
+
+        public async Task PlayAudioPattern(AudioPattern audioPattern, TimeSpan? durationTimeSpan)
+        {
+            EnsureConnected();
+            var timespanIsZero = durationTimeSpan.HasValue && durationTimeSpan.Value.Ticks == 0;
+            if (audioPattern == null || timespanIsZero)
+            {
+                await SendControlPacket(audioMode: 0, audioDuration: 0);
+            }
+            else
+            {
+                UInt16 duration = CalculateDurationFromTimeSpan(durationTimeSpan);
+                await SendControlPacket(audioMode: (byte)audioPattern.Id, audioDuration: duration);
             }
         }
 

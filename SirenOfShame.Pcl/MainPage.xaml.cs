@@ -31,9 +31,10 @@ namespace SirenOfShame.HardwareTestGui
 
         private async void SirenOfShameDeviceOnConnected(object sender, EventArgs eventArgs)
         {
-            Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 LedPatternListBox.ItemsSource = _sirenOfShameDevice.LedPatterns;
+                AudioPatternListBox.ItemsSource = _sirenOfShameDevice.AudioPatterns;
             });
             //bool turnOn = true;
             //while (true)
@@ -62,17 +63,25 @@ namespace SirenOfShame.HardwareTestGui
         {
             if (LedPatternListBox.SelectedItem == null) return;
             LedPattern ledPattern = (LedPattern)LedPatternListBox.SelectedItem;
-            var durationTimeSpan = GetDurationTimeSpan();
+            var durationTimeSpan = GetDurationTimeSpan(LedDuration.Text);
             await _sirenOfShameDevice.PlayLightPattern(ledPattern, durationTimeSpan);
         }
 
-        private TimeSpan? GetDurationTimeSpan()
+        private TimeSpan? GetDurationTimeSpan(string value)
         {
-            if (string.IsNullOrEmpty(LedDuration.Text)) return null;
+            if (string.IsNullOrEmpty(value)) return null;
             int ledDuration;
-            if (!int.TryParse(LedDuration.Text, out ledDuration)) return null;
+            if (!int.TryParse(value, out ledDuration)) return null;
             var durationTimeSpan = new TimeSpan(0, 0, 0, 0, ledDuration);
             return durationTimeSpan;
+        }
+
+        private async void PlayAudioPattern(object sender, RoutedEventArgs e)
+        {
+            if (AudioPatternListBox.SelectedItem == null) return;
+            AudioPattern audioPattern = (AudioPattern)AudioPatternListBox.SelectedItem;
+            var durationTimeSpan = GetDurationTimeSpan(LedDuration.Text);
+            await _sirenOfShameDevice.PlayAudioPattern(audioPattern, durationTimeSpan);
         }
     }
 }

@@ -8,19 +8,45 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="10">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="150" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <TextBlock Grid.Column="0" Grid.Row="0">Led Pattern:</TextBlock>
-        <ComboBox Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" x:Name="LedPatternListBox" DisplayMemberPath="Name" />
-        <TextBlock Grid.Column="0" Grid.Row="1">Duration (in ms):</TextBlock>
-        <TextBox Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" x:Name="LedDuration" Text="5000" />
-        <Button Grid.Column="1" Grid.Row="2" Click="PlayLedPattern">Play LED Pattern</Button>
+        <Pivot SelectedIndex="1">
+            <PivotItem Header="Led">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="150" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Column="0" Grid.Row="0">Led Pattern:</TextBlock>
+                    <ComboBox Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" x:Name="LedPatternListBox" DisplayMemberPath="Name" />
+                    <TextBlock Grid.Column="0" Grid.Row="1">Duration (in ms):</TextBlock>
+                    <TextBox Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" x:Name="LedDuration" Text="5000" />
+                    <Button Grid.Column="1" Grid.Row="2" Click="PlayLedPattern">Play LED Pattern</Button>
+                </Grid>
+            </PivotItem>
+            <PivotItem Header="Audio">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="150" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Column="0" Grid.Row="0">Audio Pattern:</TextBlock>
+                    <ComboBox Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" x:Name="AudioPatternListBox" DisplayMemberPath="Name" />
+                    <TextBlock Grid.Column="0" Grid.Row="1">Duration (in ms):</TextBlock>
+                    <TextBox Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" x:Name="AudioDuration" Text="5000" />
+                    <Button Grid.Column="1" Grid.Row="2" Click="PlayAudioPattern">Play Audio Pattern</Button>
+                </Grid>
+            </PivotItem>
+        </Pivot>
     </Grid>
 </Page>
