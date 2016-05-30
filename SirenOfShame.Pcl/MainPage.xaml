@@ -12,9 +12,12 @@
             <Setter Property="Width" Value="400" />
             <Setter Property="Padding" Value="0 30 0 0" />
         </Style>
+        <Style x:Name="ActionButton" TargetType="Button">
+            <Setter Property="Margin" Value="0 10 10 0" />
+        </Style>
     </Page.Resources>
     
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="10">
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Pivot Background="#eeeeee">
             <PivotItem Header="Info">
                 <Grid Style="{StaticResource PageGrid}">
@@ -65,7 +68,10 @@
                     <ComboBox Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" x:Name="LedPatternListBox" DisplayMemberPath="Name" />
                     <TextBlock Grid.Column="0" Grid.Row="1">Duration (in ms):</TextBlock>
                     <TextBox Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" x:Name="LedDuration" Text="5000" />
-                    <Button Grid.Column="1" Grid.Row="2" Click="PlayLedPattern">Play LED Pattern</Button>
+                    <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal">
+                        <Button Click="PlayLedPattern" Style="{StaticResource ActionButton}">Play Pattern</Button>
+                        <Button Click="StopLedPattern" Style="{StaticResource ActionButton}">Stop</Button>
+                    </StackPanel>
                 </Grid>
             </PivotItem>
             <PivotItem Header="Audio">
@@ -84,7 +90,10 @@
                     <ComboBox Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" x:Name="AudioPatternListBox" DisplayMemberPath="Name" />
                     <TextBlock Grid.Column="0" Grid.Row="1">Duration (in ms):</TextBlock>
                     <TextBox Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" x:Name="AudioDuration" Text="5000" />
-                    <Button Grid.Column="1" Grid.Row="2" Click="PlayAudioPattern">Play Audio Pattern</Button>
+                    <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal">
+                        <Button Click="PlayAudioPattern" Style="{StaticResource ActionButton}">Play Pattern</Button>
+                        <Button Click="StopAudioPattern" Style="{StaticResource ActionButton}">Stop</Button>
+                    </StackPanel>
                 </Grid>
             </PivotItem>
             <PivotItem Header="Manual">

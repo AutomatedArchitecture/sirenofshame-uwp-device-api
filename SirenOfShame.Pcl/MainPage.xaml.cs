@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
+using Windows.ApplicationModel;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -15,15 +17,30 @@ namespace SirenOfShame.HardwareTestGui
     {
         private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger<MainPage>();
         private readonly SirenOfShameDevice _sirenOfShameDevice;
+        private Timer _deviceInfoTimer;
 
         public MainPage()
         {
             _sirenOfShameDevice = new SirenOfShameDevice();
             InitializeComponent();
-            SetSirenConnectedVisibility();
-            _sirenOfShameDevice.Connected += SirenOfShameDeviceOnConnected;
-            _sirenOfShameDevice.Disconnected += SirenOfShameDeviceOnDisconnected;
-            _sirenOfShameDevice.StartWatching();
+            if (!DesignMode.DesignModeEnabled)
+            {
+                SetSirenConnectedVisibility();
+                _deviceInfoTimer = new Timer(DeviceInfoTimerOnTick, null, 0, 500);
+                _sirenOfShameDevice.Connected += SirenOfShameDeviceOnConnected;
+                _sirenOfShameDevice.Disconnected += SirenOfShameDeviceOnDisconnected;
+                _sirenOfShameDevice.StartWatching();
+            }
+        }
+
+        private async void DeviceInfoTimerOnTick(object state)
+        {
+            if (_sirenOfShameDevice.IsConnected)
+            {
+                var deviceInfo = await _sirenOfShameDevice.ReadDeviceInfo();
+                await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, 
+                    () => SetRealtimeDeviceInfo(deviceInfo));
+            }
         }
 
         private async void SirenOfShameDeviceOnDisconnected(object sender, EventArgs eventArgs)
@@ -56,10 +73,22 @@ namespace SirenOfShame.HardwareTestGui
             FirmwareVersion.Text = deviceInfo.FirmwareVersion.ToString();
             HardwareType.Text = deviceInfo.HardwareType.ToString();
             HardwareVersion.Text = deviceInfo.HardwareVersion.ToString();
+            SetRealtimeDeviceInfo(deviceInfo);
+        }
+
+        private void SetRealtimeDeviceInfo(UsbInfoPacket deviceInfo)
+        {
             AudioMode.Text = deviceInfo.AudioMode.ToString();
-            AudioDurationRemaining.Text = deviceInfo.AudioPlayDuration.ToString();
+            AudioDurationRemaining.Text = ToTimespanString(deviceInfo.AudioPlayDuration);
             LedMode.Text = deviceInfo.LedMode.ToString();
-            LedDurationRemaining.Text = deviceInfo.LedPlayDuration.ToString();
+            LedDurationRemaining.Text = ToTimespanString(deviceInfo.LedPlayDuration); ;
+        }
+
+        private static string ToTimespanString(ushort playDuration)
+        {
+            if (playDuration == 0) return "Not playing";
+            var timeSpan = new TimeSpan(0, 0, 0, 0, playDuration * 100);
+            return timeSpan.Minutes.ToString("00") + ":" + timeSpan.Seconds.ToString("00") + " remaining";
         }
 
         private async void PlayLedPattern(object sender, RoutedEventArgs e)
@@ -68,6 +97,11 @@ namespace SirenOfShame.HardwareTestGui
             LedPattern ledPattern = (LedPattern)LedPatternListBox.SelectedItem;
             var durationTimeSpan = GetDurationTimeSpan(LedDuration.Text);
             await _sirenOfShameDevice.PlayLightPattern(ledPattern, durationTimeSpan);
+        }
+
+        private async void StopLedPattern(object sender, RoutedEventArgs e)
+        {
+            await _sirenOfShameDevice.PlayLightPattern(null, null);
         }
 
         private TimeSpan? GetDurationTimeSpan(string value)
@@ -83,8 +117,13 @@ namespace SirenOfShame.HardwareTestGui
         {
             if (AudioPatternListBox.SelectedItem == null) return;
             AudioPattern audioPattern = (AudioPattern)AudioPatternListBox.SelectedItem;
-            var durationTimeSpan = GetDurationTimeSpan(LedDuration.Text);
+            var durationTimeSpan = GetDurationTimeSpan(AudioDuration.Text);
             await _sirenOfShameDevice.PlayAudioPattern(audioPattern, durationTimeSpan);
+        }
+
+        private async void StopAudioPattern(object sender, RoutedEventArgs e)
+        {
+            await _sirenOfShameDevice.PlayAudioPattern(null, null);
         }
 
         private async void ManualLed_OnValueChanged(object sender, RangeBaseValueChangedEventArgs e)
