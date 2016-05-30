@@ -58,12 +58,21 @@ namespace SirenOfShame.HardwareTestGui
             //}
         }
 
-        private void PlayLedPattern(object sender, RoutedEventArgs e)
+        private async void PlayLedPattern(object sender, RoutedEventArgs e)
         {
             if (LedPatternListBox.SelectedItem == null) return;
             LedPattern ledPattern = (LedPattern)LedPatternListBox.SelectedItem;
-            var ledDuration = int.Parse(LedDuration.Text);
-            _sirenOfShameDevice.PlayLightPattern(ledPattern, new TimeSpan(0, 0, 0, 0, ledDuration));
+            var durationTimeSpan = GetDurationTimeSpan();
+            await _sirenOfShameDevice.PlayLightPattern(ledPattern, durationTimeSpan);
+        }
+
+        private TimeSpan? GetDurationTimeSpan()
+        {
+            if (string.IsNullOrEmpty(LedDuration.Text)) return null;
+            int ledDuration;
+            if (!int.TryParse(LedDuration.Text, out ledDuration)) return null;
+            var durationTimeSpan = new TimeSpan(0, 0, 0, 0, ledDuration);
+            return durationTimeSpan;
         }
     }
 }

@@ -291,10 +291,11 @@ namespace SirenOfShame.Device
             }
         }
 
-        public async Task PlayLightPattern(LedPattern lightPattern, TimeSpan durationTimeSpan)
+        public async Task PlayLightPattern(LedPattern lightPattern, TimeSpan? durationTimeSpan)
         {
             EnsureConnected();
-            if (lightPattern == null)
+            var timespanIsZero = durationTimeSpan.HasValue && durationTimeSpan.Value.Ticks == 0;
+            if (lightPattern == null || timespanIsZero)
             {
                 await SendControlPacket(ledMode: 0, ledDuration: 0);
             }
