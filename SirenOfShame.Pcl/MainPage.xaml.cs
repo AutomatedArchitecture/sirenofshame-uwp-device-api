@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls.Primitives;
 using MetroLog;
 using SirenOfShame.Device;
 
@@ -37,30 +38,11 @@ namespace SirenOfShame.HardwareTestGui
                 await SetDeviceInfo();
 
                 LedPatternListBox.ItemsSource = _sirenOfShameDevice.LedPatterns;
+                LedPatternListBox.SelectedIndex = 0;
                 AudioPatternListBox.ItemsSource = _sirenOfShameDevice.AudioPatterns;
+                AudioPatternListBox.SelectedIndex = 0;
                 SetSirenConnectedVisibility();
             });
-            //bool turnOn = true;
-            //while (true)
-            //{
-            //    Log.Debug("device connected so turnong on led's");
-            //    var led0 = turnOn ? (byte)10 : (byte)0;
-            //    var manualControlData = new ManualControlData
-            //    {
-            //        Led0 = led0,
-            //        Led1 = led0,
-            //        Led2 = led0,
-            //        Led3 = led0,
-            //        Led4 = led0,
-            //        Siren = false
-            //    };
-            //    if (_sirenOfShameDevice.IsConnected)
-            //    {
-            //        await _sirenOfShameDevice.ManualControl(manualControlData);
-            //    }
-            //    turnOn = !turnOn;
-            //    await Task.Delay(1000);
-            //}
         }
 
         private void SetSirenConnectedVisibility()
@@ -103,6 +85,25 @@ namespace SirenOfShame.HardwareTestGui
             AudioPattern audioPattern = (AudioPattern)AudioPatternListBox.SelectedItem;
             var durationTimeSpan = GetDurationTimeSpan(LedDuration.Text);
             await _sirenOfShameDevice.PlayAudioPattern(audioPattern, durationTimeSpan);
+        }
+
+        private async void ManualLed_OnValueChanged(object sender, RangeBaseValueChangedEventArgs e)
+        {
+            var manualControlData = new ManualControlData
+            {
+                Led0 = ToByte(ManualLed1.Value),
+                Led1 = ToByte(ManualLed2.Value),
+                Led2 = ToByte(ManualLed3.Value),
+                Led3 = ToByte(ManualLed4.Value),
+                Led4 = ToByte(ManualLed5.Value),
+                Siren = false
+            };
+            await _sirenOfShameDevice.ManualControl(manualControlData);
+        }
+
+        private byte ToByte(double val)
+        {
+            return (byte) val;
         }
     }
 }
