@@ -6,14 +6,50 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
     mc:Ignorable="d">
-
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="10">
-        <Pivot SelectedIndex="1">
-            <PivotItem Header="Led">
-                <Grid>
+        <Pivot Background="#eeeeee" SelectedIndex="1">
+            <!--<Pivot.HeaderTemplate>
+                <DataTemplate>
+                    <Grid Background="Red"></Grid>
+                </DataTemplate>
+            </Pivot.HeaderTemplate>-->
+            <PivotItem Header="Info">
+                <Grid Width="400">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="150" />
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="250" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Column="0" Grid.Row="0">Firmware Version:</TextBlock>
+                    <TextBlock Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" x:Name="FirmwareVersion" />
+                    <TextBlock Grid.Column="0" Grid.Row="1">Hardware Type:</TextBlock>
+                    <TextBlock Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" x:Name="HardwareType" />
+                    <TextBlock Grid.Column="0" Grid.Row="2">Hardware Version:</TextBlock>
+                    <TextBlock Grid.Column="1" Grid.Row="2" HorizontalAlignment="Stretch" x:Name="HardwareVersion" />
+                    <TextBlock Grid.Column="0" Grid.Row="3">Audio Mode:</TextBlock>
+                    <TextBlock Grid.Column="1" Grid.Row="3" HorizontalAlignment="Stretch" x:Name="AudioMode" />
+                    <TextBlock Grid.Column="0" Grid.Row="4">Audio Duration:</TextBlock>
+                    <TextBlock Grid.Column="1" Grid.Row="4" HorizontalAlignment="Stretch" x:Name="AudioDurationRemaining" />
+                    <TextBlock Grid.Column="0" Grid.Row="5">Led Mode:</TextBlock>
+                    <TextBlock Grid.Column="1" Grid.Row="5" HorizontalAlignment="Stretch" x:Name="LedMode" />
+                    <TextBlock Grid.Column="0" Grid.Row="6">Led Duration:</TextBlock>
+                    <TextBlock Grid.Column="1" Grid.Row="6" HorizontalAlignment="Stretch" x:Name="LedDurationRemaining" />
+                </Grid>
+            </PivotItem>
+            <PivotItem Header="Led">
+                <Grid Width="400">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="150" />
+                        <ColumnDefinition Width="250" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
@@ -29,10 +65,10 @@
                 </Grid>
             </PivotItem>
             <PivotItem Header="Audio">
-                <Grid>
+                <Grid Width="400">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="150" />
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="250" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
@@ -48,5 +84,8 @@
                 </Grid>
             </PivotItem>
         </Pivot>
+        <Grid Background="#eee" x:Name="DisconnectedPanel" Visibility="Collapsed">
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="Siren Disconnected"></TextBlock>
+        </Grid>
     </Grid>
 </Page>

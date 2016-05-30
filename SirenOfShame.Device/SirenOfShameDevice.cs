@@ -207,7 +207,7 @@ namespace SirenOfShame.Device
             }
         }
 
-        private async Task<UsbInfoPacket> ReadDeviceInfo()
+        public async Task<UsbInfoPacket> ReadDeviceInfo()
         {
             var infoPacket = await GetInputReport<UsbInfoPacket>(ReportId_In_Info);
             Log.Debug("Info packet receieved:");

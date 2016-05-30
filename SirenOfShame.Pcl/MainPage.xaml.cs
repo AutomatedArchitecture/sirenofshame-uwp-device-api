@@ -19,22 +19,26 @@ namespace SirenOfShame.HardwareTestGui
         {
             _sirenOfShameDevice = new SirenOfShameDevice();
             InitializeComponent();
+            SetSirenConnectedVisibility();
             _sirenOfShameDevice.Connected += SirenOfShameDeviceOnConnected;
             _sirenOfShameDevice.Disconnected += SirenOfShameDeviceOnDisconnected;
             _sirenOfShameDevice.StartWatching();
         }
 
-        private void SirenOfShameDeviceOnDisconnected(object sender, EventArgs eventArgs)
+        private async void SirenOfShameDeviceOnDisconnected(object sender, EventArgs eventArgs)
         {
-            
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, SetSirenConnectedVisibility);
         }
 
         private async void SirenOfShameDeviceOnConnected(object sender, EventArgs eventArgs)
         {
-            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
             {
+                await SetDeviceInfo();
+
                 LedPatternListBox.ItemsSource = _sirenOfShameDevice.LedPatterns;
                 AudioPatternListBox.ItemsSource = _sirenOfShameDevice.AudioPatterns;
+                SetSirenConnectedVisibility();
             });
             //bool turnOn = true;
             //while (true)
@@ -57,6 +61,23 @@ namespace SirenOfShame.HardwareTestGui
             //    turnOn = !turnOn;
             //    await Task.Delay(1000);
             //}
+        }
+
+        private void SetSirenConnectedVisibility()
+        {
+            DisconnectedPanel.Visibility = _sirenOfShameDevice.IsConnected ? Visibility.Collapsed : Visibility.Visible;
+        }
+
+        private async Task SetDeviceInfo()
+        {
+            var deviceInfo = await _sirenOfShameDevice.ReadDeviceInfo();
+            FirmwareVersion.Text = deviceInfo.FirmwareVersion.ToString();
+            HardwareType.Text = deviceInfo.HardwareType.ToString();
+            HardwareVersion.Text = deviceInfo.HardwareVersion.ToString();
+            AudioMode.Text = deviceInfo.AudioMode.ToString();
+            AudioDurationRemaining.Text = deviceInfo.AudioPlayDuration.ToString();
+            LedMode.Text = deviceInfo.LedMode.ToString();
+            LedDurationRemaining.Text = deviceInfo.LedPlayDuration.ToString();
         }
 
         private async void PlayLedPattern(object sender, RoutedEventArgs e)
