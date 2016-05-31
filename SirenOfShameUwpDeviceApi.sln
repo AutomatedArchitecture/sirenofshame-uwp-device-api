@@ -9,6 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SirenOfShame.Device", "Sire
 EndProject
 Project("{FF286327-C783-4F7A-AB73-9BCBAD0D4460}") = "SirenOfShame.Device.Nuget", "SirenOfShame.Device.Nuget\SirenOfShame.Device.Nuget.nuproj", "{61562E50-4D52-4EEA-8350-A58D306AC096}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2C370471-CEF7-4AF5-9996-CDAF81C476C6}"
+	ProjectSection(SolutionItems) = preProject
+		readme.md = readme.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

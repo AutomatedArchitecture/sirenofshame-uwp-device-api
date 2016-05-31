@@ -1,7 +1,7 @@
 ## Summary
 
 This project provides an API for Universal Windows 
-Platform projects to access a siren of shame.  
+Platform projects to access a [siren of shame](http://sirenofshame.com) device.
 
 ## Project Structure
 
@@ -19,7 +19,7 @@ To create your own custom siren of shame device software:
 
 2. In Nuget Package Manager: 
 
-    `Install-Package SirenOfShame.Uwp.Device`
+    `Install-Package SirenOfShame.Device`
 
 3. Add the following to the Package.appxmanifest:  
 
