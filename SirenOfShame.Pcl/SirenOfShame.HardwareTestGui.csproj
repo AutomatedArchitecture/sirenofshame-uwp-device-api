@@ -127,12 +127,6 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SirenOfShame.Device\SirenOfShame.Device.csproj">
-      <Project>{e31decbc-b26b-4bc3-ab33-0244605f570a}</Project>
-      <Name>SirenOfShame.Device</Name>
-    </ProjectReference>
-  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

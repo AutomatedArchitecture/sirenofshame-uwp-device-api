@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SirenOfShame.HardwareTestGu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SirenOfShame.Device", "SirenOfShame.Device\SirenOfShame.Device.csproj", "{E31DECBC-B26B-4BC3-AB33-0244605F570A}"
 EndProject
+Project("{FF286327-C783-4F7A-AB73-9BCBAD0D4460}") = "SirenOfShame.Device.Nuget", "SirenOfShame.Device.Nuget\SirenOfShame.Device.Nuget.nuproj", "{61562E50-4D52-4EEA-8350-A58D306AC096}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,22 @@ Global
 		{E31DECBC-B26B-4BC3-AB33-0244605F570A}.Release|x64.Build.0 = Release|x64
 		{E31DECBC-B26B-4BC3-AB33-0244605F570A}.Release|x86.ActiveCfg = Release|x86
 		{E31DECBC-B26B-4BC3-AB33-0244605F570A}.Release|x86.Build.0 = Release|x86
+		{61562E50-4D52-4EEA-8350-A58D306AC096}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61562E50-4D52-4EEA-8350-A58D306AC096}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61562E50-4D52-4EEA-8350-A58D306AC096}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{61562E50-4D52-4EEA-8350-A58D306AC096}.Debug|ARM.Build.0 = Debug|Any CPU
+		{61562E50-4D52-4EEA-8350-A58D306AC096}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{61562E50-4D52-4EEA-8350-A58D306AC096}.Debug|x64.Build.0 = Debug|Any CPU
+		{61562E50-4D52-4EEA-8350-A58D306AC096}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{61562E50-4D52-4EEA-8350-A58D306AC096}.Debug|x86.Build.0 = Debug|Any CPU
+		{61562E50-4D52-4EEA-8350-A58D306AC096}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61562E50-4D52-4EEA-8350-A58D306AC096}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61562E50-4D52-4EEA-8350-A58D306AC096}.Release|ARM.ActiveCfg = Release|Any CPU
+		{61562E50-4D52-4EEA-8350-A58D306AC096}.Release|ARM.Build.0 = Release|Any CPU
+		{61562E50-4D52-4EEA-8350-A58D306AC096}.Release|x64.ActiveCfg = Release|Any CPU
+		{61562E50-4D52-4EEA-8350-A58D306AC096}.Release|x64.Build.0 = Release|Any CPU
+		{61562E50-4D52-4EEA-8350-A58D306AC096}.Release|x86.ActiveCfg = Release|Any CPU
+		{61562E50-4D52-4EEA-8350-A58D306AC096}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
