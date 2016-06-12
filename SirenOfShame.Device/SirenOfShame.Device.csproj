@@ -112,8 +112,8 @@
     <Compile Include="DeviceUnavailableException.cs" />
     <Compile Include="HardwareType.cs" />
     <Compile Include="LedPattern.cs" />
+    <Compile Include="LogManagerFactory.cs" />
     <Compile Include="ManualControlData.cs" />
-    <Compile Include="MyLogManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SirenOfShameDevice.cs" />
     <Compile Include="UsbControlPacket.cs" />

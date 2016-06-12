@@ -8,7 +8,6 @@ using Windows.Devices.Enumeration;
 using Windows.Devices.HumanInterfaceDevice;
 using Windows.Storage;
 using Windows.Storage.Streams;
-using MetroLog;
 
 namespace SirenOfShame.Device
 {
