@@ -143,6 +143,7 @@ namespace SirenOfShame.Device
         public async Task<bool> TryConnect()
         {
             var sosDevice = await GetDeviceInfo();
+            if (sosDevice == null) return false;
             _hidDevice = await HidDevice.FromIdAsync(sosDevice.Id, FileAccessMode.ReadWrite);
             if (_hidDevice != null)
             {
