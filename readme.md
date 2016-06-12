@@ -5,11 +5,11 @@ Platform projects to access a [siren of shame](http://sirenofshame.com) device.
 
 ## Project Structure
 
-The Visual Studio solution consists of three projects:
+The Visual Studio solution consists of three components:
 
 * SirenOfShameUwpDeviceApi - the API for accessing a siren
 * SirenOfShame.HardwareTestGui - a sample project
-* SirenOfShame.Device.Nuget - the Nuget project (requires the [NuGet Package Project](https://visualstudiogallery.msdn.microsoft.com/fbe9b9b8-34ae-47b5-a751-cb71a16f7e96) )
+* \Build - the Nuget spec and packages
 
 ## Getting Started
 

@@ -5,8 +5,6 @@ VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SirenOfShame.Device", "SirenOfShame.Device\SirenOfShame.Device.csproj", "{E31DECBC-B26B-4BC3-AB33-0244605F570A}"
 EndProject
-Project("{FF286327-C783-4F7A-AB73-9BCBAD0D4460}") = "SirenOfShame.Device.Nuget", "SirenOfShame.Device.Nuget\SirenOfShame.Device.Nuget.nuproj", "{61562E50-4D52-4EEA-8350-A58D306AC096}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2C370471-CEF7-4AF5-9996-CDAF81C476C6}"
 	ProjectSection(SolutionItems) = preProject
 		readme.md = readme.md
@@ -42,22 +40,6 @@ Global
 		{E31DECBC-B26B-4BC3-AB33-0244605F570A}.Release|x64.Build.0 = Release|x64
 		{E31DECBC-B26B-4BC3-AB33-0244605F570A}.Release|x86.ActiveCfg = Release|x86
 		{E31DECBC-B26B-4BC3-AB33-0244605F570A}.Release|x86.Build.0 = Release|x86
-		{61562E50-4D52-4EEA-8350-A58D306AC096}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{61562E50-4D52-4EEA-8350-A58D306AC096}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{61562E50-4D52-4EEA-8350-A58D306AC096}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{61562E50-4D52-4EEA-8350-A58D306AC096}.Debug|ARM.Build.0 = Debug|Any CPU
-		{61562E50-4D52-4EEA-8350-A58D306AC096}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{61562E50-4D52-4EEA-8350-A58D306AC096}.Debug|x64.Build.0 = Debug|Any CPU
-		{61562E50-4D52-4EEA-8350-A58D306AC096}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{61562E50-4D52-4EEA-8350-A58D306AC096}.Debug|x86.Build.0 = Debug|Any CPU
-		{61562E50-4D52-4EEA-8350-A58D306AC096}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{61562E50-4D52-4EEA-8350-A58D306AC096}.Release|Any CPU.Build.0 = Release|Any CPU
-		{61562E50-4D52-4EEA-8350-A58D306AC096}.Release|ARM.ActiveCfg = Release|Any CPU
-		{61562E50-4D52-4EEA-8350-A58D306AC096}.Release|ARM.Build.0 = Release|Any CPU
-		{61562E50-4D52-4EEA-8350-A58D306AC096}.Release|x64.ActiveCfg = Release|Any CPU
-		{61562E50-4D52-4EEA-8350-A58D306AC096}.Release|x64.Build.0 = Release|Any CPU
-		{61562E50-4D52-4EEA-8350-A58D306AC096}.Release|x86.ActiveCfg = Release|Any CPU
-		{61562E50-4D52-4EEA-8350-A58D306AC096}.Release|x86.Build.0 = Release|Any CPU
 		{66B62AAE-EC0A-4345-85DC-D5EA6924B30C}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{66B62AAE-EC0A-4345-85DC-D5EA6924B30C}.Debug|ARM.ActiveCfg = Debug|ARM
 		{66B62AAE-EC0A-4345-85DC-D5EA6924B30C}.Debug|ARM.Build.0 = Debug|ARM

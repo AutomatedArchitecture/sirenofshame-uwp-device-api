@@ -1,23 +1,27 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
-  <metadata>
-    <id>SirenOfShame.Uwp.Device</id>
-    <version>1.0.0</version>
-    <title>Siren Of Shame UWP Device API</title>
-    <authors>Lee Richardson</authors>
-    <owners>Lee Richardson</owners>
-    <licenseUrl>https://github.com/AutomatedArchitecture/sirenofshame-uwp/blob/develop/LICENSE.md</licenseUrl>
-    <projectUrl>https://github.com/AutomatedArchitecture/sirenofshame-uwp</projectUrl>
-    <iconUrl>http://sirenofshame.com/images/logo32.png</iconUrl>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>A UWP API for reading from and writing to a siren of shame device using the HID USB protocol.  Provies notifications for when a device is connected and disconnected.  Allows reading led and audio patterns available as well as playing those patterns on the device.</description>
-    <summary>A UWP API for controlling a Siren of Shame device</summary>
-    <copyright>Copyright © Automated Architecture</copyright>
-    <tags>SirenOfShame Siren Shame Continuous Integration CI Jenkins TeamCity</tags>
-  </metadata>
-  <files>
-    <file src="C:\Program Files (x86)\Windows Kits\10\UnionMetadata\facade\Windows.winmd" target="lib\.NETCore50\Windows.winmd" exclude="" />
-    <file src="C:\dev\SirenOfShamePcl\SirenOfShame.Device\bin\Release\SirenOfShame.Device.dll" target="lib\.NETCore50\SirenOfShame.Device.dll" exclude="" />
-    <file src="C:\dev\SirenOfShamePcl\SirenOfShame.Device\bin\Release\SirenOfShame.Device.pdb" target="lib\.NETCore50\SirenOfShame.Device.pdb" exclude="" />
-  </files>
+    <metadata>
+        <id>SirenOfShame.Device</id>
+        <version>1.0.1</version>
+        <title>Siren Of Shame UWP Device API</title>
+        <authors>Lee Richardson</authors>
+        <owners>Lee Richardson</owners>
+        <licenseUrl>https://github.com/AutomatedArchitecture/sirenofshame-uwp/blob/develop/LICENSE.md</licenseUrl>
+        <projectUrl>https://github.com/AutomatedArchitecture/sirenofshame-uwp</projectUrl>
+        <iconUrl>http://sirenofshame.com/images/logo32.png</iconUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>A UWP API for reading from and writing to a siren of shame device using the HID USB protocol.  Provies notifications for when a device is connected and disconnected.  Allows reading led and audio patterns available as well as playing those patterns on the device.</description>
+        <summary>A UWP API for controlling a Siren of Shame device</summary>
+        <releaseNotes>Added ARM support (for Windows IoT and Raspberry Pi, and theoretically WinPhone too). Removed MetroLog dependency.</releaseNotes>
+        <copyright>Copyright © Automated Architecture</copyright>
+        <tags>SirenOfShame Siren Shame Continuous Integration CI Jenkins TeamCity Windows IoT</tags>
+    </metadata>
+    <files>
+        <file src="..\SirenOfShame.Device\bin\Release\SirenOfShame.Device.dll" target="lib\.NETCore50\SirenOfShame.Device.dll" />
+        <file src="..\SirenOfShame.Device\bin\Release\SirenOfShame.Device.pdb" target="lib\.NETCore50\SirenOfShame.Device.pdb" />
+        <file src="C:\Program Files (x86)\Windows Kits\10\UnionMetadata\facade\Windows.WinMD" target="lib\.NETCore50\Windows.winmd" />
+        <file src="..\SirenOfShame.Device\bin\ARM\Release\SirenOfShame.Device.dll" target="lib\.NETCore50-wp\SirenOfShame.Device.dll" />
+        <file src="..\SirenOfShame.Device\bin\ARM\Release\SirenOfShame.Device.pdb" target="lib\.NETCore50-wp\SirenOfShame.Device.pdb" />
+        <file src="C:\Program Files (x86)\Windows Kits\10\UnionMetadata\facade\Windows.WinMD" target="lib\.NETCore50-wp\Windows.winmd" />
+    </files>
 </package>
