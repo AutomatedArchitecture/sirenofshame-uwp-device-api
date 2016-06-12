@@ -35,11 +35,13 @@ To create your own custom siren of shame device software:
 
 4. Instantiate a SirenOfShameDevice, subscribe to Connected, try turning on the led's like this:
 
-    ```c#
+```c#
 public MainPage() {
   _sirenOfShameDevice = new SirenOfShameDevice();
+  _sirenOfShameDevice.StartWatching();
   _sirenOfShameDevice.Connected += SirenOfShameDeviceOnConnected;
 }
+
 private async void SirenOfShameDeviceOnConnected(object sender, EventArgs eventArgs) {
   var manualControlData = new ManualControlData
   {
@@ -52,6 +54,13 @@ private async void SirenOfShameDeviceOnConnected(object sender, EventArgs eventA
   };
   await _sirenOfShameDevice.ManualControl(manualControlData);
 }
+
+public void Dispose()
+{
+    _sirenOfShameDevice.Dispose();
+}
 ```
 
-5. For more details on how to use the API check out the SirenOfShame.HardwareTestGui project
+<ol start="5">
+  <li>For more details on how to use the API check out the SirenOfShame.HardwareTestGui project</li>
+</ol>
